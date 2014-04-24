@@ -1,0 +1,26 @@
+$def with(todo, userid)
+$:render.header()
+        <p>请修改下边的内容...</p>
+        <div class="box">
+            <form action="?" method="post" name="form">
+                $for i in range(48,80):
+                    <a href="javascript:" onClick="addtext_title('($(i))')"><img src="/static/images/face/$(i).gif"/></a>
+                <br/>
+                <br/>
+                <p>标题：&nbsp;&nbsp;&nbsp;<input type="text" name="title" value= "$todo.title"/> 
+                <br/>
+                <br/> 
+                $for i in range(1,47):
+                    <a href="javascript:" onClick="addtext_content('($(i))')"><img src="/static/images/face/$(i).gif"/></a>
+                </br>
+                </br>
+                <textarea name='content'>$todo.content</textarea>
+                <div class="button" style="text-align:right;margin-right:12px">
+					<button type="submit" class="btn btn-primary">改好了</button>  
+					<a href="/365days/$userid"><input type="button" class="btn" value="取消"></a>
+				</div>
+            </form>
+        </div>
+
+
+$:render.foot()

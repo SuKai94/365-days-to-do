@@ -1,0 +1,18 @@
+$def with(todo)
+$:render.header()
+        <p>发送邮件前，请填写下边的内容...</p>
+        <div class="box">
+			<form action="?" method="post" name="form">
+  				<p>您邮箱用户名：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="mail_user" /></p>
+  				<p>您邮箱登陆密码： <input type="password" name="mail_pass" /></p>
+				<p>对方邮箱：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="mail_to" /></p>
+				<p>邮件主题：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="sub" /></p>
+				<p>邮件内容：<br/><br/><textarea name="content" >$todo.title</textarea></p>
+ 				<div class="button" style="text-align:right;margin-right:12px">
+					<button type="submit" class="btn btn-primary">发送该邮件</button>
+					<a href="/"><input type="button" value="取消" class="btn"></a>
+				</div>
+			</form>
+        </div>
+		
+$:render.foot()

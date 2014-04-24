@@ -1,0 +1,30 @@
+$def with(todo, userid)
+$:render.header()
+        <h3>此条备忘录的详情如下：</h3>
+        <div class="box">
+            <h4>标题：</h4>
+            $code:
+                def change():
+                    s=todo.title
+                    for new,old in replaceList:
+                        s=s.replace(new,old)
+                    return s
+            $:change()
+            <hr/>
+            <h4>内容：</h4>
+            $code:
+                def change():
+                    s=todo.content
+                    for new,old in replaceList:
+                        s=s.replace(new,old)
+                    return s
+            $:change()
+            <hr/>
+            <h4>创建日期：</h4>
+            <p>$todo.post_date</p>
+            <hr/>
+        </div> 
+        <div class="button" style="text-align:right;margin-right:12px">
+            <a href="/365days/$userid"><input type="button" class="btn btn-primary" value="首页"></a>
+        </div>
+$:render.foot()
