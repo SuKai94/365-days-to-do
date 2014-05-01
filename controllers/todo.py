@@ -13,11 +13,25 @@ db = settings.db
 tb = 'todo'
 user ='user'
 
-def logged():
-    if web.config._session.login == 1:
-        return True
-    else:
-        return False
+'''
+former is_login? version
+'''
+# def logged():
+#     if web.config._session.login == 1:
+#         return True
+#     else:
+#         return False
+
+'''
+now is_login? version, using decorator
+'''
+def is_login(func):
+    def wrapper(*args):
+        if web.config._session.login == 1:
+            return func(*args)
+        else:
+            raise web.seeother('/')
+    return wrapper
 
 def judge_same(userid):
     if web.config._session.userid == userid:
@@ -32,9 +46,10 @@ def get_by_id(id):
     return s[0]
 
 class New:
+    @is_login
     def POST(self, userid):
-        if not logged():
-            return render.error('已经登出,请重新登录', '/')
+        # if not logged():
+        #     return render.error('已经登出,请重新登录', '/')
         if not judge_same(int(userid)):
             return render.error('不允许访问', '/365days/%d' % web.config._session.userid)
         i = web.input()
@@ -46,9 +61,10 @@ class New:
         raise web.seeother('/365days/%s' % userid)
 
 class Finish:
+    @is_login
     def GET(self, userid, id):
-        if not logged():
-            return render.error('已经登出,请重新登录', '/')
+        # if not logged():
+        #     return render.error('已经登出,请重新登录', '/')
         if not judge_same(int(userid)):
             return render.error('不允许访问', '/365days/%d' % web.config._session.userid)
         todo = get_by_id(id)
@@ -66,9 +82,10 @@ class Finish:
         raise web.seeother('/365days/%s' % userid)
 
 class Detail:
+    @is_login
     def GET(self, userid, id):
-        if not logged():
-            return render.error('已经登出,请重新登录', '/')
+        # if not logged():
+        #     return render.error('已经登出,请重新登录', '/')
         if not judge_same(int(userid)):
             return render.error('不允许访问', '/365days/%d' % web.config._session.userid)
         todo = get_by_id(id)
@@ -77,9 +94,10 @@ class Detail:
         return render.detail(todo, userid)
 
 class Edit:
+    @is_login
     def GET(self, userid, id):
-        if not logged():
-            return render.error('已经登出,请重新登录', '/')
+        # if not logged():
+        #     return render.error('已经登出,请重新登录', '/')
         if not judge_same(int(userid)):
             return render.error('不允许访问', '/365days/%d' % web.config._session.userid)
         todo = get_by_id(id)
@@ -100,9 +118,10 @@ class Edit:
         return render.error('修改成功！', '/365days/%s' % userid)
 
 class Delete:
+    @is_login
     def GET(self, userid, id):
-        if not logged():
-            return render.error('已经登出,请重新登录', '/')
+        # if not logged():
+        #     return render.error('已经登出,请重新登录', '/')
         if not judge_same(int(userid)):
             return render.error('不允许访问', '/365days/%d' % web.config._session.userid)
         todo = get_by_id(id)
@@ -112,9 +131,10 @@ class Delete:
         return render.error('删除成功！', '/365days/%s' % userid)
 
 class Index:
+    @is_login
     def GET(self, userid):
-        if not logged():
-            return render.error('已经登出,请重新登录', '/')
+        # if not logged():
+            # return render.error('已经登出,请重新登录', '/')
         if not judge_same(int(userid)):
             return render.error('不允许访问', '/365days/%d' % web.config._session.userid)
         todos1 = db.select(tb, where='userid=$userid', order='finished asc, id asc', vars=locals())
@@ -122,9 +142,10 @@ class Index:
         return render.index(todos1, todos2, userid)
 
 class Email:
+    @is_login
     def GET(self, userid, id):
-        if not logged():
-            return render.error('已经登出,请重新登录', '/')
+        # if not logged():
+        #     return render.error('已经登出,请重新登录', '/')
         if not judge_same(int(userid)):
             return render.error('不允许访问', '/365days/%d' % web.config._session.userid)
         todo = get_by_id(id)
