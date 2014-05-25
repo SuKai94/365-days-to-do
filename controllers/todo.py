@@ -2,7 +2,7 @@
 # coding: utf-8
 import web
 from config import settings, sendemail
-from datetime import datetime
+import datetime
 
 import sys
 reload(sys)
@@ -22,6 +22,13 @@ former is_login? version
 #     else:
 #         return False
 
+
+def cal_left_days(day1, day2):
+    d1 = datetime.datetime(int(day1[0]), int(day1[1]), int(day1[2]))
+    d2 = datetime.datetime(int(day2[0]), int(day2[1]), int(day2[2]))
+    return (d2 - d1).days
+
+
 '''
 now is_login? version, using decorator
 '''
@@ -30,7 +37,7 @@ def is_login(func):
         if web.config._session.login == 1:
             return func(*args)
         else:
-            raise web.seeother('/')
+            return render.error('已经登出,请重新登录', '/')
     return wrapper
 
 def judge_same(userid):
@@ -55,9 +62,15 @@ class New:
         i = web.input()
         title = i['title']
         content = i['content']
+        finish_date = i['finish_date']
         if not title:
             return render.error('标题是必须的', None)
-        db.insert(tb, title=title, content=content, post_date=datetime.now(), userid=userid)
+        today = datetime.date.today()
+        post_date = today.strftime('%Y-%m-%d')
+        day1 = post_date.split('-')
+        day2 = finish_date.split('-')
+        left_days = cal_left_days(day1, day2)
+        db.insert(tb, title=title, content=content, post_date=post_date, userid=userid, finish_date=finish_date, left_days=left_days)
         raise web.seeother('/365days/%s' % userid)
 
 class Finish:

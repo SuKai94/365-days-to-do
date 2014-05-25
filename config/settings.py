@@ -94,7 +94,7 @@ replaceList = [
 
 config = web.storage(
     site_name = '365 Days To Do',
-	site_desc = '',
+    site_desc = '',
     static = '/static',
 )
 

@@ -3,39 +3,36 @@ $:render.header()
 
         <div class="main">
             <p>待办事项</p>
-            <div class="box todos"> 
-                <ul>
-                    $for todo in todos1:
+                <div class="box todos">
+                    <ul>
+                        $for todo in todos1:
                             $if todo.finished == 0:
                                 <li>
-                                <i class="icon-question-sign"></i>
-                                &nbsp;   
-                                <a href="/365days/$userid/finish/$todo.id?status=yes"><button type="button" class="btn btn-success">完成</button></a>         
-                                $code:
-                                   def change():
-                                        s=todo.title
-                                        for new,old in replaceList:
-                                             s=s.replace(new,old)
-                                        return s
-                                $:change()
-                                &nbsp;
-                                <a href="/365days/$userid/detail/$todo.id">详情</a>,
-                                <a href="/365days/$userid/edit/$todo.id">修改</a>,
-								<a href="/365days/$userid/sendemail/$todo.id">邮件提醒</a>,
-                                <a href="/365days/$userid/delete/$todo.id" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>         
+                                    &nbsp;
+                                    <a href="/365days/$userid/finish/$todo.id?status=yes"><button type="button"class="btn btn-success">完成</button></a>
+                                    $code:
+                                        def change():
+                                            s=todo.title
+                                            for new,old in replaceList:
+                                                s=s.replace(new,old)
+                                            return s
+                                    $:change()
+                                    &nbsp;
+                                    <a href="/365days/$userid/detail/$todo.id">详情</a>,
+                                    <a href="/365days/$userid/edit/$todo.id">修改</a>,
+                                    <a href="/365days/$userid/sendemail/$todo.id">邮件提醒</a>,
+                                    <a href="/365days/$userid/delete/$todo.id" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
                                 </li>
-                </ul>
-            </div>
+                    </ul>
+                </div>
             <hr />
 			
             <p>已办事项</p>
-            <div class="box todos">
-                
-                <ul>
-                    $for todo in todos2:
+                <div class="box todos">
+                    <ul>
+                        $for todo in todos2:
                             $if todo.finished == 1:
                                 <li>
-                                <i class="icon-ok-sign"></i>
                                 &nbsp;
                                 <a href="/365days/$userid/finish/$todo.id?status=no"><button type="button" class="btn btn-info">恢复</button></a>
                                 &nbsp;
@@ -51,31 +48,37 @@ $:render.header()
                                 <a href="/365days/$userid/edit/$todo.id">修改</a>,
                                 <a href="/365days/$userid/delete/$todo.id" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
                                 </li>
-                </ul>
-            </div>
+                    </ul>
+                </div>
             <hr />
 			
-            <p>加一条什么的。。。<img src="/static/images/face/2.gif" /></p>
+            <p>添加任务</p>
             <div class="box">
                 <form action="/365days/$userid/new" method="post" name="form">
                     $for i in range(48,81):
                         <a href="javascript:" onClick="addtext_title('($(i))')"><img src="/static/images/face/$(i).gif"/></a>
                     </br>
                     </br>
-                    <p>标题：&nbsp;&nbsp;&nbsp;<input type="text" name="title" placeholder="请填写标题。。。。"/ > </p>
+                    <p>标题：&nbsp;&nbsp;&nbsp;<input type="text" name="title" placeholder="请填写任务概述。。。。"/ > </p>
+                    </br>
+                    <p>任务截至日期：&nbsp;&nbsp;&nbsp;<input type="text" name="finish_date" placeholder="选择任务截至日期。" id="selecttime"></p>
+                    <script src="$config.static/js/index.js" type="text/javascript"></script>
+                    </br>
                     $for i in range(1,48):
                         <a href="javascript:" onClick="addtext_content('($(i))')"><img src="/static/images/face/$(i).gif"/></a>
                     </br>
-                    </br>    
+                    </br>              
                     <textarea name='content' placeholder="写下详尽内容吧。。"></textarea>
+                    <br/>
+                    <br/>
+                    <br/>
                     <div class="button"  style="text-align:right;margin-right:12px">
+                        <br/>
                         <button type="submit" class="btn btn-primary">加上去</button>
-						<a href="/365days/$userid"><input type = "button" value = "取消" class="btn"></a>
-					</div>
+                        <a href="/365days/$userid"><input type = "button" value = "取消" class="btn"></a>
+                    </div>
                 </form>
-				
             </div>
-
         </div>
 
 $:render.foot()
